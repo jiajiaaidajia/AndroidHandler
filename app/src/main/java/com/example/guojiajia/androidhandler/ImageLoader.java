@@ -2,6 +2,7 @@ package com.example.guojiajia.androidhandler;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -292,8 +293,7 @@ public class ImageLoader {
      * @param reqHeight
      * @return
      */
-    private Bitmap decodeSampledBitmapFromResource(String pathName,
-                                                   int reqWidth, int reqHeight)
+    private Bitmap decodeSampledBitmapFromResource(String pathName,int reqWidth, int reqHeight)
     {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -310,6 +310,11 @@ public class ImageLoader {
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
         }
+        int drawableWidth = bitmap.getWidth();
+        int drawbleHeight = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.setRotate(0);
+        bitmap = Bitmap.createBitmap(bitmap,0,0,drawableWidth,drawbleHeight,matrix,true);
         return bitmap;
     }
     /**
@@ -376,7 +381,7 @@ public class ImageLoader {
             // 计算出实际宽度和目标宽度的比率
             int widthRatio = Math.round((float) width / (float) reqWidth);
             int heightRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = Math.max(widthRatio, heightRatio);
+            inSampleSize = Math.min(widthRatio, heightRatio);
         }
         return inSampleSize;
     }

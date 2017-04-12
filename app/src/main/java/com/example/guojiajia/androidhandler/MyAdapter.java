@@ -30,7 +30,7 @@ public class MyAdapter extends BaseAdapter
         this.mDirPath = dirPath;
         mInflater = LayoutInflater.from(mContext);
 
-        mImageLoader = ImageLoader.getInstance();
+        mImageLoader = ImageLoader.getInstance(3, ImageLoader.Type.LIFO);
     }
 
     @Override
